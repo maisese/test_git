@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Pokemon Assignment</title>
+
+    <style>
+        .grid {
+            width: 70%;
+            background-color: darkslateblue;
+            display: flex;
+            flex-wrap: wrap;
+            outline: 5px solid red;
+        }
+
+        .pokemon {
+            outline: 5px solid red;
+        }
+
+        .pokedex {
+            width: 25%;
+            border: 20px solid firebrick;
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            padding: 5px;
+
+        }
+
+        img {
+            image-rendering: pixelated;
+            display: flex;
+            
+        }
+
+        h2{
+            text-transform: capitalize;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            //This will get create my divs
+            var pokemon = [];
+            for (var i = 1; i < 151; i++) {
+                var str = '<div class="pokemon" id="' + i + '"></div>';
+                $('.grid').append(str);
+                //this makes my divs into <div class=pokemon id#1></div
+            }
+
+            //This will get the image
+            for (var i = 1; i < 151; i++) {
+                $.get("https://pokeapi.co/api/v2/pokemon/" + i + "/", function (res) {
+                    //This is the responses for the array, puts in all the pokemon info to 
+                    pokemon[res.id] = res;
+                    //
+                    str = '<img src=' + res['sprites']['front_shiny'] + '></img>';
+                    $('.pokemon#' + res.id).html(str);
+                })
+            }
+            $('.pokemon').click(function () {
+                //this will the id on the pokemon you clicked
+                var idx = $(this).attr('id');
+                console.log(pokemon[idx].height);
+
+                //point to where you want to put it,replace it, use an html or attr
+                var poken = "";
+                poken += "<h2>"+ pokemon[idx].name +"</h2>";
+                $(".pokename").html(poken);
+                console.log(poken);
+
+                var pokeimg = "";
+                pokeimg += '<img src=' + pokemon[idx]['sprites']['front_shiny'] + '></img>'
+                //pokeimg += "<h2>"+ pokemon[idx].png +"</h2>";
+                $(".pokeimage").html(pokeimg);
+                console.log(pokeimg);
+                
+                var pokeh = "";
+                pokeh += "<h4>Height</h4>";
+                pokeh += "<li>" + pokemon[idx].height + "</li>";
+                $(".pokeheight").html(pokeh);
+                console.log(pokeh);
+
+                var pokew = "";
+                pokew += "<h4>Weight</h4>";
+                pokew += "<li>" + pokemon[idx].weight + "</li>";
+                $(".pokeweight").html(pokew);
+                console.log(pokew);
+            });
+        });
+
+    </script>
+
+</head>
+
+<body>
+    <h1>Pokemon Gallery Assignment</h1>
+    <div class="grid"></div>
+    <div class="pokedex">
+        <h2 class="pokename"></h2>
+        <div class="pokeimage"></div>
+        <div class="poketype">Types</div>
+        <div class="pokeheight">Height</div>
+        <div class="pokeweight">Weight</div>
+    </div>
+
+</body>
+
+</html>
